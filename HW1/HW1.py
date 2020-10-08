@@ -29,6 +29,10 @@ label_load = np.zeros((1,10),dtype=int)
 bin_img = fp_trainImage.read(28*28)
 bin_label = fp_trainLabel.read(1)
 
+layer_img =np.reshape(unpack(len(bin_img)*'B',bin_img),1)
+
+print(layer_img)
+
 img_load = np.reshape(unpack(len(bin_img)*'B',bin_img),(28,28))
 label_load = int.from_bytes(bin_label,byteorder='big',signed=False)
 
@@ -37,33 +41,3 @@ plt.show()
 
 print(img_load)
 print(label_load)
-
-# img_loaded = np.zeros((28,28),dtype=int)
-# label_loaded = [[],[],[],[],[],[],[],[],[],[]]
-# d = 0 
-# l = 0 
-# idx = 0
-
-# s = fp_trainImage.read(16)
-# l = fp_trainLabel.read(8)
-
-# _iter = 0
-
-# while True:
-#     s = fp_trainImage.read(28*28)
-#     l = fp_trainLabel.read(1)
-
-#     if not s:
-#         break
-#     if not l:
-#         break
-
-#     idx = int(l[0])
-
-#     img_loaded = np.reshape(unpack(len(s)*'b',s),(28,28))
-#     label_loaded[idx].append(img)
-
-#     k=k+1
-
-# matplotlib.pyplot.imshow(img_loaded,cmap=cm.binary)
-# matplotlib.pyplot.imshow()
