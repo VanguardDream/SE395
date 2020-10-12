@@ -12,21 +12,39 @@ import timeit
 
 import activation
 import loss
+import loader
+import propagate
 
 codePath = os.path.dirname( os.path.abspath("HW1.py"))
 
 fp_trainImage = open(codePath+'\\data\\train\\train-images.idx3-ubyte','rb')
 fp_trainLabel = open(codePath+'\\data\\train\\train-labels.idx1-ubyte','rb')
 
-#Jump MNIST file header
+# Jump MNIST file header
 tmp = fp_trainImage.read(16)
 tmp = fp_trainLabel.read(8)
+# -----------------------------------
 
-img_load = np.zeros((28,28),dtype=int)
-label_load = np.zeros((1,10),dtype=int)
+X, Y = loader.load(1,fp_trainImage,fp_trainLabel)
 
-bin_img = np.reshape(np.array([]),(0,28*28))
-bin_label = np.reshape(np.array([]),(0,1))
+# For linear network model
+w = np.zeros((784,10))
+b = 1
+# -----------------------------------
+
+# For 3 layer network model
+w_1 = np.zeros((784,64))
+b_1 = 1
+w_2 = np.zeros((64,32))
+b_2 = 1
+w_3 = np.zeros((32,10))
+b_3 = 1
+# -----------------------------------
+
+w, b, X, Y = np.array([[1], [2]]), 2, np.array([[1,2], [3,4]]), np.array([[1, 0]])
+propagate.propagate(w,b,X,Y)
+
+sys.exit()
 
 # #iterative image loader
 # while True:
@@ -52,20 +70,6 @@ bin_label = np.reshape(np.array([]),(0,1))
 # print(label_load)
 
 #----------------------------------------------------------------
-bin_img = fp_trainImage.read((784))
-bin_label = fp_trainLabel.read(1)
-
-layer_img = np.reshape(unpack(len(bin_img)*'B',bin_img),(784,1))
-label = np.array([0,0,0,0,0,0,0,0,0,0])
-
-label[int.from_bytes(bin_label,byteorder='big',signed=False)] = 1
-
-w_1 = np.zeros((784,784))
-b_1 = 1
-w_2 = np.zeros((784,784))
-b_2 = 1
-w_3 = np.zeros((784,784))
-b_3 = 1
 
 w_out = np.ones((784,10))
 
