@@ -14,35 +14,33 @@ import activation
 import loss
 import loader
 import propagate
+import initiatialize
 
 codePath = os.path.dirname( os.path.abspath("HW1.py"))
 
 fp_trainImage = open(codePath+'\\data\\train\\train-images.idx3-ubyte','rb')
 fp_trainLabel = open(codePath+'\\data\\train\\train-labels.idx1-ubyte','rb')
 
+fp_testImage = open(codePath+'\\data\\test\\test-images.idx3-ubyte','rb')
+fp_testLabel = open(codePath+'\\data\\test\\test-labels.idx1-ubyte','rb')
+
 # Jump MNIST file header
 tmp = fp_trainImage.read(16)
 tmp = fp_trainLabel.read(8)
+tmp = fp_testImage.read(16)
+tmp = fp_testLabel.read(8)
 # -----------------------------------
 
-X, Y = loader.load(1,fp_trainImage,fp_trainLabel)
+X, Y = loader.load(200,fp_trainImage,fp_trainLabel)
+X_t, Y_t = loader.load(2,fp_testImage,fp_testLabel)
 
-# For linear network model
-w = np.zeros((784,10))
-b = 1
-# -----------------------------------
+n_x = 28*28
+n_h = 2
+n_y = 10
 
-# For 3 layer network model
-w_1 = np.zeros((784,64))
-b_1 = 1
-w_2 = np.zeros((64,32))
-b_2 = 1
-w_3 = np.zeros((32,10))
-b_3 = 1
-# -----------------------------------
+layer_dims = (n_x,n_h,n_y)
 
-w, b, X, Y = np.array([[1], [2]]), 2, np.array([[1,2], [3,4]]), np.array([[1, 0]])
-propagate.propagate(w,b,X,Y)
+params = initiatialize.two_layer_model(X,Y,layer_dims=(n_x,n_h,n_y),num_iter= 1000)
 
 sys.exit()
 
